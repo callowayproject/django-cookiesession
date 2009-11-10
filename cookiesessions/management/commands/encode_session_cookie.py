@@ -3,7 +3,7 @@ This is great for testing. It allows you to set the cookie up by passing it
 keywords and arguments
 """
 from django.core.management.base import LabelCommand
-from middleware.cookie import SessionStore
+from cookiesessions.middleware import SessionStore
 from django.utils import simplejson
 
 class Command(LabelCommand):
