@@ -1,0 +1,8 @@
+include *.py
+include *.txt
+include *.rst
+include LICENSE
+include *.sh
+recursive-include cookiesession *.py *.html
+recursive-include docs *
+recursive-include example *.py *.html
