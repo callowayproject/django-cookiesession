@@ -5,7 +5,7 @@ TEMPLATE_DEBUG = DEBUG
 import os, sys
 APP = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 ROOT = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(APP)
+sys.path.insert(0, APP)
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
@@ -25,7 +25,7 @@ DATABASE_PORT = ''             # Set to empty string for default. Not used with 
 # although not all choices may be available on all operating systems.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'America/Eastern'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -64,16 +64,13 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     #'django.contrib.sessions.middleware.SessionMiddleware',
-    'cookiesessions.middleware.CookieSessionMiddleware',
+    'cookiesession.middleware.CookieSessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
 ROOT_URLCONF = 'example.urls'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
     os.path.join(ROOT, 'templates'),
 )
 
@@ -82,5 +79,6 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'cookiesessions',
+    'django.contrib.admin',
+    'cookiesession',
 )
