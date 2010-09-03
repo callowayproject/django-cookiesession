@@ -1,19 +1,20 @@
 from base64 import b64decode, b64encode
 from time import time
 
-from django.contrib.sessions.backends.base import SessionBase
+from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
 from django.utils import simplejson
 from django.utils.http import cookie_date
 from django.utils.hashcompat import sha_constructor
 from django.contrib.auth.models import AnonymousUser
+from django.contrib.sessions.backends.base import SessionBase
 
 from settings import MAX_COOKIE_SIZE, USERNAME_COOKIE_NAME
-from django.conf import settings
 
 SESSION_COOKIE_DOMAIN = settings.SESSION_COOKIE_DOMAIN
 SESSION_COOKIE_NAME = settings.SESSION_COOKIE_NAME
 SESSION_COOKIE_PATH = settings.SESSION_COOKIE_PATH
+
 
 class UsernameInCookieMiddleware(object):
     def process_response(self, request, response):
@@ -22,7 +23,6 @@ class UsernameInCookieMiddleware(object):
         elif hasattr(request, 'user')  and isinstance(request.user, AnonymousUser) and USERNAME_COOKIE_NAME in request.COOKIES:
             response.delete_cookie(USERNAME_COOKIE_NAME, domain=SESSION_COOKIE_DOMAIN)
         return response
-
 
 class CookieSessionMiddleware(object):
     """
@@ -66,7 +66,6 @@ class CookieSessionMiddleware(object):
                     # log a warning here.
                     pass
         return response
-
 
 class SessionStore(SessionBase):
     def __init__(self, cookie):
