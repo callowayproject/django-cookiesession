@@ -3,8 +3,9 @@ This is great for testing. It allows you to set the cookie up by passing it
 keywords and arguments
 """
 from django.core.management.base import LabelCommand
-from cookiesessions.middleware import SessionStore
 from django.utils import simplejson
+from cookiesession.middleware import SessionStore
+
 
 class Command(LabelCommand):
     help = """Encodes key=val arguments into a cookie for manual insertion 
@@ -15,13 +16,8 @@ class Command(LabelCommand):
     
     def handle(self, *labels, **options):
         super(Command, self).handle(*labels, **options)
-        print self._cookie_dict
-        session = SessionStore('')
-        print session.encode(self._cookie_dict)
-    
+        print SessionStore('').encode(self._cookie_dict)
     
     def handle_label(self, label, **options):
-        (key, val) = label.split('=')
+        key, val = label.split('=')
         self._cookie_dict[key] = val
-        return
-
