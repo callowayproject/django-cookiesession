@@ -82,3 +82,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'cookiesession',
 )
+
+try:
+    import django_coverage
+    TEST_RUNNER = 'django_coverage.coverage_runner.run_tests'
+except ImportError:
+    pass
