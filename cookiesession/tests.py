@@ -50,6 +50,6 @@ class TestCookieSessions(TestCase):
         self.assertEqual(sys.stdout.getvalue(), 'eJyrVkrLz1eyUlBKSixSqjUzTDM3TzFNNE1LSbM0NEg1TrGwNDczNjdMTE01SU0ytUwzMk40sUgBALJ3D40=\n')
 
         DecodeCommand().handle(sys.stdout.getvalue())
-        self.assertEqual(sys.stdout.getvalue(), "eJyrVkrLz1eyUlBKSixSqjUzTDM3TzFNNE1LSbM0NEg1TrGwNDczNjdMTE01SU0ytUwzMk40sUgBALJ3D40=\n{'foo': 'bar'}\n")
+        self.assertEqual(sys.stdout.getvalue().replace("u'","'"), "eJyrVkrLz1eyUlBKSixSqjUzTDM3TzFNNE1LSbM0NEg1TrGwNDczNjdMTE01SU0ytUwzMk40sUgBALJ3D40=\n{'foo': 'bar'}\n")
 
         sys.stdout = out
