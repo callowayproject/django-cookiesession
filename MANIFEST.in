@@ -3,6 +3,7 @@ include *.txt
 include *.rst
 include LICENSE
 include *.sh
+exclude example/* example/templates/registration/login.html
 recursive-include cookiesession *.py *.html
 recursive-include docs *
-recursive-include example *.py *.html
+recursive-include *.py *.html
