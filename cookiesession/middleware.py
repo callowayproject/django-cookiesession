@@ -3,11 +3,15 @@ from time import time
 
 from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
+from django.core.cache import cache
+from django.db.models.signals import post_save
 from django.utils import simplejson
 from django.utils.http import cookie_date
 from django.utils.hashcompat import sha_constructor
-from django.contrib.auth.models import AnonymousUser
+
 from django.contrib.sessions.backends.base import SessionBase
+from django.contrib.auth.models import User, AnonymousUser
+from django.contrib.auth import logout
 
 from settings import MAX_COOKIE_SIZE, USERNAME_COOKIE_NAME
 
@@ -37,6 +41,11 @@ class CookieSessionMiddleware(object):
             session = request.session
         except AttributeError:
             return response
+        
+        if '_auth_user_id' in session and session['_auth_user_id'] in self.inactive_user_ids:
+            logout(request)
+            session.deleted = True
+        
         if session.deleted:
             response.delete_cookie(SESSION_COOKIE_NAME,
                 domain = SESSION_COOKIE_DOMAIN,
@@ -66,6 +75,20 @@ class CookieSessionMiddleware(object):
                     # log a warning here.
                     pass
         return response
+    
+    @property
+    def inactive_user_ids(self):
+        """
+        Return a cached set of user ids that are inactive (creating the cache
+        if necessary)
+        """
+        cached_ids = cache.get('inactiveuserids')
+        if cached_ids is None:
+            cached_ids = User.objects.filter(is_active=False).values_list(
+                    'id', flat=True
+            )
+            cache.set('inactiveuserids', cached_ids)
+        return cached_ids
 
 class SessionStore(SessionBase):
     def __init__(self, cookie):
@@ -110,3 +133,22 @@ class SessionStore(SessionBase):
         if sha_constructor(json + settings.SECRET_KEY).hexdigest() != json_sha:
             raise SuspiciousOperation('User tampered with session cookie')
         return simplejson.loads(json)
+        
+def udpate_inactive_ids(sender, instance, created, **kwargs):
+    """
+    Signal Handler for user model saves. Updates the cache of inactive ids.
+    
+    We will assume that users just being created will not affect the inactive
+    user list, so do nothing.
+    
+    sender is the Class of the model
+    instance is the object saved
+    created is True when the object is created
+    using is an alias to the database (for 1.2)
+    """
+    if not created:
+        cached_ids = User.objects.filter(is_active=False).values_list(
+                'id', flat=True
+        )
+        cache.set('inactiveuserids', cached_ids)
+post_save.connect(udpate_inactive_ids, sender=User)
