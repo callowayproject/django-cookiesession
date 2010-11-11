@@ -1,9 +1,7 @@
-include *.py
-include *.txt
-include *.rst
-include LICENSE
-include *.sh
-exclude example/* example/templates/registration/login.html
-recursive-include cookiesession *.py *.html
+recursive-include doc_src *
 recursive-include docs *
-recursive-include *.py *.html
+
+include LICENSE
+include README.rst
+
+prune example/*
