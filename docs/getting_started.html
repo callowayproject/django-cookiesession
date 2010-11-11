@@ -1,0 +1,151 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting Started with Cookie Session &mdash; Django-CookieSessions v0.1.2 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Django-CookieSessions v0.1.2 documentation" href="index.html" />
+    <link rel="next" title="Management Commands" href="management_commands.html" />
+    <link rel="prev" title="Welcome to Cookie Sessions for Django’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+<div id="docstitle">
+	<p>Django-CookieSessions v0.1.2 documentation</p>
+</div>
+<div id="header">
+	<div id="title"><h1>Getting Started with Cookie Session</h1></div>
+	<ul id="headerButtons">
+		<li id="toc_button"><div class="headerButton"><a href="#">Table of Contents</a></div></li>
+		<li id="page_buttons">
+			<div class="headerButton"><a href="genindex.html" title="General Index" accesskey="I">index</a></div>
+			<div class="headerButton"><a href="management_commands.html" title="Management Commands" accesskey="N">next</a></div>
+			<div class="headerButton"><a href="index.html" title="Welcome to Cookie Sessions for Django’s documentation!" accesskey="P">previous</a></div>
+		</li>
+	</ul>
+</div>
+
+<div id="sphinxsidebar">
+  <div class="sphinxsidebarwrapper">
+	<ul><li class="toctree-l1"><a href="index.html">Main Page</a></li></ul>
+	<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Getting Started with Cookie Session</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-cookie-session-works">How Cookie Session Works</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="management_commands.html">Management Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings.html">Settings</a></li>
+</ul>
+
+    <div id="searchbox" style="display: none">
+      
+        <form class="search" action="search.html" method="get">
+			<div class="search-wrapper">
+			<span class="search-left"></span>
+			<input class="prettysearch" type="text" name="q" size="18" />
+			<span class="search-right">&nbsp;</span>
+			</div>
+          <input type="submit" value="Search" class="searchbutton" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+        <p class="searchtip" style="font-size: 90%">
+        Enter search terms or a module, class or function name.
+        </p>
+    </div>
+    <script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</div>
+
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="getting-started-with-cookie-session">
+<span id="getting-started"></span><h1>Getting Started with Cookie Session<a class="headerlink" href="#getting-started-with-cookie-session" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Install it from the <a class="reference external" href="http://pypi.python.org/">Python Package Index</a></p>
+<div class="highlight-python"><pre>easy_install cookiesession</pre>
+</div>
+</li>
+<li><p class="first">Comment out, or delete <tt class="docutils literal"><span class="pre">django.contrib.sessions.middleware.SessionMiddleware</span></tt> from settings.py&#8217;s <tt class="docutils literal"><span class="pre">MIDDLEWARE_CLASSES</span></tt> setting.</p>
+</li>
+<li><p class="first">Add cookiesession&#8217;s middleware to your settings.py <tt class="docutils literal"><span class="pre">MIDDLEWARE_CLASSES</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+    <span class="c">#&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;,</span>
+    <span class="s">&#39;cookiesessions.middleware.CookieSessionMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><em>Optional.</em> In order to use the management commands you need to add <tt class="docutils literal"><span class="pre">cookiesession</span></tt> to settings.py&#8217;s <tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt></p>
+</li>
+<li><p class="first">In settings.py (or local_settings.py) set <tt class="docutils literal"><span class="pre">SESSION_COOKIE_DOMAIN</span></tt>, <tt class="docutils literal"><span class="pre">SESSION_COOKIE_NAME</span></tt>, or <tt class="docutils literal"><span class="pre">SESSION_COOKIE_PATH</span></tt> as necessary (see <a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/http/sessions/#session-cookie-domain">the Django session docs</a> for more info).</p>
+<p>Developers will want to override the <tt class="docutils literal"><span class="pre">SESSION_COOKIE_DOMAIN</span></tt> with <tt class="docutils literal"><span class="pre">127.0.0.1</span></tt> and access their local development server as <tt class="docutils literal"><span class="pre">http://127.0.0.1:8000/</span></tt></p>
+</li>
+</ol>
+</div>
+<div class="section" id="how-cookie-session-works">
+<h2>How Cookie Session Works<a class="headerlink" href="#how-cookie-session-works" title="Permalink to this headline">¶</a></h2>
+<p>Cookies are inherently insecure and can&#8217;t be trusted. Users have access to the values and can do what ever they want with them. So how could you ever put important data in a cookie?</p>
+<p>There&#8217;s a difference between &#8220;important&#8221; and &#8220;secret&#8221;. Django only stores two pieces of data about the user in the session cookie: the user&#8217;s id and the authentication backend used for authentication. Neither of these bits of information are &#8220;secret&#8221; in that knowing them can lead to security breaches. They are &#8220;important&#8221; in that we need them to retrieve the user&#8217;s information.</p>
+<p>However with cookies, a user could easily modify the user id stored in the cookie and suddenly be a different user. That means we need a way to detect a modification to the cookie.</p>
+<p>The process is pretty straight forward:</p>
+<ol class="arabic simple">
+<li>The session dictionary is converted into a <a class="reference external" href="http://json.org/">JSON</a> string</li>
+<li>A <a class="reference external" href="http://en.wikipedia.org/wiki/SHA_hash_functions">SHA1 hash</a> is made using the concatenation of the JSON string and the site&#8217;s <tt class="docutils literal"><span class="pre">SECRET_KEY</span></tt>. This creates a secure &#8220;fingerprint&#8221; of something unique: the session and your site&#8217;s <tt class="docutils literal"><span class="pre">SECRET_KEY</span></tt>.</li>
+<li>The JSON string and the SHA1 hash are concatenated, compressed and base64 encoded. Now the cookie contains the data, and a &#8220;fingerprint&#8221; that your site can use to ensure everything is as it should be.</li>
+</ol>
+<p>When the user has logged in and makes a new request, we reverse the steps to verify the cookie hasn&#8217;t been tampered with:</p>
+<ol class="arabic simple">
+<li>The cookie is decoded and decompressed</li>
+<li>The data is split into the SHA1 hash and the JSON string</li>
+<li>A new SHA1 hash is generated from the received JSON string and the site&#8217;s <tt class="docutils literal"><span class="pre">SECRET_KEY</span></tt></li>
+<li>If the hash received in the cookie doesn&#8217;t match the newly generated hash, a <tt class="docutils literal"><span class="pre">SuspiciousOperation</span></tt> exception is raised. If the hashes match, the JSON string is converted into a python object and used.</li>
+</ol>
+</div>
+</div>
+
+
+          </div> 
+        </div>
+      </div>
+    <div class="footer">
+    <p>
+      &copy; Copyright 2010, The Washington Times.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.4.
+	</p>
+    </div>
+      <div class="clearer"></div>
+    </div>
+	<div id="breadcrumbs">
+		Getting Started with Cookie Session
+		</ul>
+	</div>
+	<script type="text/javascript" charset="utf-8" src="_static/toc.js"></script>
+  </body>
+</html>
