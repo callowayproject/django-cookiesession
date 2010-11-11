@@ -1,24 +1,32 @@
+import os
 from setuptools import setup, find_packages
 
-try:
-    long_description = open('README.rst').read()
-except IOError:
-    long_description = ''
+def read_file(filename):
+    """Read a file into a string"""
+    path = os.path.abspath(os.path.dirname(__file__))
+    filepath = os.path.join(path, filename)
+    try:
+        return open(filepath).read()
+    except IOError:
+        return ''
 
-packages = find_packages()
-packages.remove('example')
+# Use the docstring of the __init__ file to be the description
+DESC = " ".join(__import__('cookiesession').__doc__.splitlines()).strip()
 
-setup(name='django-cookiesession',
-      version='0.1.1',
-      description='A secure way to hold Django session data in cookies',
-      long_description=long_description,
-      author='Justin Quick, The Washington Times',
-      author_email='jquick@washingtontimes.com',
-      url='http://github.com/washingtontimes/django-cookiesession',
-      packages=packages,
-      classifiers=['Development Status :: 4 - Beta',
-          'Framework :: Django',
-          'Intended Audience :: Developers',
-          'License :: OSI Approved :: Apache Software License',
-          ],
-      )
+setup(
+    name = 'django-cookiesession',
+    version = __import__('cookiesession').get_version().replace(' ', '-'),
+    url = 'http://github.com/washingtontimes/django-cookiesession',
+    author = 'Justin Quick, Corey Oordt, The Washington Times',
+    author_email = 'webdev@washingtontimes.com',
+    description = DESC,
+    long_description = read_file('README'),
+    packages=find_packages(),
+    include_package_data = True,
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Framework :: Django',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
+    ],
+)
